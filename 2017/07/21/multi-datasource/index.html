@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://walkthecat.github.io/blog/2017/07/21/multi-datasource/index.html">
 <meta property="og:site_name" content="WalkTheCat&#39;s note">
 <meta property="og:description" content="一、 多数据源动态切换原理项目中我们经常会遇到多数据源的问题，尤其是数据同步或定时任务等项目更是如此；又例如：读写分离数据库配置的系统。 1、 多数据源设置：1）静态数据源切换：一般情况下，我们可以配置多个数据源，然后为每个数据源写一套对应的sessionFactory和dao层代码(以hibernate为例，mybatis同理)，——我们称之为静态数据源配置。 2）动态数据源切换：可看出在Dao">
-<meta property="og:updated_time" content="2017-10-13T04:16:44.274Z">
+<meta property="og:updated_time" content="2017-10-13T04:21:12.102Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于spring的aop实现多数据源动态切换">
 <meta name="twitter:description" content="一、 多数据源动态切换原理项目中我们经常会遇到多数据源的问题，尤其是数据同步或定时任务等项目更是如此；又例如：读写分离数据库配置的系统。 1、 多数据源设置：1）静态数据源切换：一般情况下，我们可以配置多个数据源，然后为每个数据源写一套对应的sessionFactory和dao层代码(以hibernate为例，mybatis同理)，——我们称之为静态数据源配置。 2）动态数据源切换：可看出在Dao">
@@ -191,6 +191,7 @@
 <li>针对上面的这种问题，可以考虑把动态切换数据源的aop放到service层，但要注意一定要在事务aop之前来完成。这样，对于一个需要多个数据源数据的请求，我们只需要在controller里面注入多个service实现即可。但这种做法的问题在于，controller层里面会涉及到一些不必要的业务代码，例如：合并两个数据源中的list…</li>
 <li>此外，针对上面的问题，还可以再考虑一种方案，就是把事务控制到dao层，然后在service层里面动态切换数据源。</li>
 </ul>
+<a id="more"></a>
 <h3 id="二、实例："><a href="#二、实例：" class="headerlink" title="二、实例："></a>二、实例：</h3><p>本例子中，对不同数据源分包（package）管理，同一包下的代码使用了同一数据源。</p>
 <p>1、写一个DynamicDataSource类继承AbstractRoutingDataSource，并实现determineCurrentLookupKey方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title">AbstractRoutingDataSource</span> </span>&#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> Object <span class="title">determineCurrentLookupKey</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> CustomerContextHolder.getCustomerType();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
