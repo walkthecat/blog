@@ -1,8 +1,10 @@
 ---
 title: 基于spring的aop实现多数据源动态切换
-date: 2017-07-21 16:13:23
+date: 2017-10-13 13:17:03
 tags: 技术
 ---
+
+>https://lanjingling.github.io/2016/02/15/spring-aop-dynamicdatasource/
 
 ### 一、 多数据源动态切换原理
 
@@ -123,5 +125,3 @@ public class DataSourceInterceptor {
 <!-- 事物aop -->
 。。。
 ```
-
->https://lanjingling.github.io/2016/02/15/spring-aop-dynamicdatasource/
