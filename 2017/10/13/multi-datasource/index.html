@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://walkthecat.github.io/blog">
-  <title>WalkTheCat&#39;s note</title>
+  <title>基于spring的aop实现多数据源动态切换 | WalkTheCat&#39;s note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="WalkTheCat&apos;s personal blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="WalkTheCat&#39;s note">
-<meta property="og:url" content="https://walkthecat.github.io/blog/index.html">
+  <meta name="description" content="https://lanjingling.github.io/2016/02/15/spring-aop-dynamicdatasource/  一、 多数据源动态切换原理项目中我们经常会遇到多数据源的问题，尤其是数据同步或定时任务等项目更是如此；又例如：读写分离数据库配置的系统。 1、 多数据源设置：1）静态数据源切换：一般情况下，我们可以配置多个数据源，然后为每个数据源写一套对应的sessio">
+<meta name="keywords" content="技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于spring的aop实现多数据源动态切换">
+<meta property="og:url" content="https://walkthecat.github.io/blog/2017/10/13/multi-datasource/index.html">
 <meta property="og:site_name" content="WalkTheCat&#39;s note">
-<meta property="og:description" content="WalkTheCat&apos;s personal blog">
+<meta property="og:description" content="https://lanjingling.github.io/2016/02/15/spring-aop-dynamicdatasource/  一、 多数据源动态切换原理项目中我们经常会遇到多数据源的问题，尤其是数据同步或定时任务等项目更是如此；又例如：读写分离数据库配置的系统。 1、 多数据源设置：1）静态数据源切换：一般情况下，我们可以配置多个数据源，然后为每个数据源写一套对应的sessio">
+<meta property="og:updated_time" content="2017-10-13T05:17:18.349Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WalkTheCat&#39;s note">
-<meta name="twitter:description" content="WalkTheCat&apos;s personal blog">
+<meta name="twitter:title" content="基于spring的aop实现多数据源动态切换">
+<meta name="twitter:description" content="https://lanjingling.github.io/2016/02/15/spring-aop-dynamicdatasource/  一、 多数据源动态切换原理项目中我们经常会遇到多数据源的问题，尤其是数据同步或定时任务等项目更是如此；又例如：读写分离数据库配置的系统。 1、 多数据源设置：1）静态数据源切换：一般情况下，我们可以配置多个数据源，然后为每个数据源写一套对应的sessio">
   
     <link rel="alternative" href="/atom.xml" title="WalkTheCat&#39;s note" type="application/atom+xml">
   
@@ -158,16 +160,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-multi-datasource" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-multi-datasource" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2017/10/13/multi-datasource/">基于spring的aop实现多数据源动态切换</a>
+    <h1 class="article-title" itemprop="name">
+      基于spring的aop实现多数据源动态切换
     </h1>
   
 
@@ -194,9 +194,16 @@
 <li>针对上面的这种问题，可以考虑把动态切换数据源的aop放到service层，但要注意一定要在事务aop之前来完成。这样，对于一个需要多个数据源数据的请求，我们只需要在controller里面注入多个service实现即可。但这种做法的问题在于，controller层里面会涉及到一些不必要的业务代码，例如：合并两个数据源中的list…</li>
 <li>此外，针对上面的问题，还可以再考虑一种方案，就是把事务控制到dao层，然后在service层里面动态切换数据源。</li>
 </ul>
-        
-          <a class="article-more-a" href="/blog/2017/10/13/multi-datasource/#more">more >></a>
-        
+<a id="more"></a>
+<h3 id="二、实例："><a href="#二、实例：" class="headerlink" title="二、实例："></a>二、实例：</h3><p>本例子中，对不同数据源分包（package）管理，同一包下的代码使用了同一数据源。</p>
+<p>1、写一个DynamicDataSource类继承AbstractRoutingDataSource，并实现determineCurrentLookupKey方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DynamicDataSource</span> <span class="keyword">extends</span> <span class="title">AbstractRoutingDataSource</span> </span>&#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> Object <span class="title">determineCurrentLookupKey</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> CustomerContextHolder.getCustomerType();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2、利用ThreadLocal解决线程安全问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerContextHolder</span> </span>&#123;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DATA_SOURCE_A = <span class="string">"dataSource"</span>;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DATA_SOURCE_B = <span class="string">"dataSource2"</span>;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;String&gt; contextHolder = <span class="keyword">new</span> ThreadLocal&lt;String&gt;();</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCustomerType</span><span class="params">(String customerType)</span> </span>&#123;</div><div class="line">		contextHolder.set(customerType);</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCustomerType</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> contextHolder.get();</div><div class="line">	&#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">clearCustomerType</span><span class="params">()</span> </span>&#123;</div><div class="line">		contextHolder.remove();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3、定义一个数据源切面类，通过aop来控制数据源的切换：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.aspectj.lang.JoinPoint;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataSourceInterceptor</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setdataSourceMysql</span><span class="params">(JoinPoint jp)</span> </span>&#123;</div><div class="line">		DatabaseContextHolder.setCustomerType(<span class="string">"dataSourceMySql"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setdataSourceOracle</span><span class="params">(JoinPoint jp)</span> </span>&#123;</div><div class="line">		DatabaseContextHolder.setCustomerType(<span class="string">"dataSourceOracle"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>4、在spring的application.xml中配置多个dataSource：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- 数据源1 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dataSource"</span> <span class="attr">class</span>=<span class="string">"org.apache.commons.dbcp.BasicDataSource"</span>&gt;</span></div><div class="line">	       <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driverClassName"</span> <span class="attr">value</span>=<span class="string">"net.sourceforge.jtds.jdbc.Driver"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"jdbc:jtds:sqlserver://10.82.81.51:1433;databaseName=standards"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"youguess"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"youguess"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- 数据源2 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dataSource2"</span> <span class="attr">class</span>=<span class="string">"org.apache.commons.dbcp.BasicDataSource"</span>&gt;</span></div><div class="line">	       <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driverClassName"</span> <span class="attr">value</span>=<span class="string">"net.sourceforge.jtds.jdbc.Driver"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"jdbc:jtds:sqlserver://10.82.81.52:1433;databaseName=standards"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"youguess"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"youguess"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dataSource"</span> <span class="attr">class</span>=<span class="string">"com.core.DynamicDataSource"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"targetDataSources"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">map</span> <span class="attr">key-type</span>=<span class="string">"java.lang.String"</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"dataSourceMySql"</span> <span class="attr">value-ref</span>=<span class="string">"dataSourceMySql"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"dataSourceOracle"</span> <span class="attr">value-ref</span>=<span class="string">"dataSourceOracle"</span> /&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">map</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"defaultTargetDataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSourceMySql"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- 动态数据源切换aop 先与事务的aop  --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dataSourceInterceptor"</span> <span class="attr">class</span>=<span class="string">"com.core.DataSourceInterceptor"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">id</span>=<span class="string">"dataSourceAspect"</span> <span class="attr">ref</span>=<span class="string">"dataSourceInterceptor"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">"dsMysql"</span> <span class="attr">expression</span>=<span class="string">"execution(* com.service.mysql..*.*(..))"</span> /&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">"dsOracle"</span> <span class="attr">expression</span>=<span class="string">"execution(* com.service.oracle..*.*(..))"</span> /&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">"setdataSourceMysql"</span> <span class="attr">pointcut-ref</span>=<span class="string">"dsMysql"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">"setdataSourceOracle"</span> <span class="attr">pointcut-ref</span>=<span class="string">"dsOracle"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- 事物aop --&gt;</span></div><div class="line">。。。</div></pre></td></tr></table></figure>
       
 
       
@@ -218,16 +225,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/blog/2017/10/13/multi-datasource/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://walkthecat.github.io/blog/2017/10/13/multi-datasource/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2017/07/21/java-program-error-fixed/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用java碰到的问题汇总</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -247,413 +313,12 @@
 
 
 
-
   
-    <article id="post-java-program-error-fixed" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2017/07/21/java-program-error-fixed/">使用java碰到的问题汇总</a>
-    </h1>
   
 
-        
-        <a href="/blog/2017/07/21/java-program-error-fixed/" class="archive-article-date">
-  	<time datetime="2017-07-21T08:13:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="1-missing-builder"><a href="#1-missing-builder" class="headerlink" title="1. missing builder"></a>1. missing builder</h3><img src="/blog/2017/07/21/java-program-error-fixed/1.png" alt="error image" title="error image">
-<p>由于是同事使用的是myeclipse创建的项目，导入eclipse后需要把相关的missing builder全部勾掉。</p>
-<h3 id="2-WARNING-Unknown-version-string-3-1-Default-version-will-be-used"><a href="#2-WARNING-Unknown-version-string-3-1-Default-version-will-be-used" class="headerlink" title="2. WARNING: Unknown version string [3.1]. Default version will be used"></a>2. WARNING: Unknown version string [3.1]. Default version will be used</h3><p>tomcat 7只支持到最高Servlet3.0，tomcat 8支持servlet3.1 </p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/blog/2017/07/21/java-program-error-fixed/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-git-usage" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2017/07/19/git-usage/">git用法</a>
-    </h1>
   
 
-        
-        <a href="/blog/2017/07/19/git-usage/" class="archive-article-date">
-  	<time datetime="2017-07-19T09:16:43.977Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="git使用方法"><a href="#git使用方法" class="headerlink" title="git使用方法"></a>git使用方法</h3><p>初始化仓库</p>
-<pre><code>git init
-</code></pre><p>添加readme</p>
-<pre><code>git add README.md
-</code></pre><p>提交一次</p>
-<pre><code>git commit -m &quot;first commit&quot;
-</code></pre><p>添加源</p>
-<pre><code>git remote add origin  https://github.com/walkthecat/testgit
-</code></pre><p>推送到</p>
-<pre><code>git push -u origin master
-</code></pre><p>删除远程目录且不删除本地文件</p>
-<blockquote>
-<p><a href="https://stackoverflow.com/questions/7927230/remove-directory-from-remote-repository-after-adding-them-to-gitignore" target="_blank" rel="external">https://stackoverflow.com/questions/7927230/remove-directory-from-remote-repository-after-adding-them-to-gitignore</a></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git rm -r --cached your-directory</div><div class="line">git commit -m &quot;Remove the now ignored directory your-directory&quot;</div></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/blog/2017/07/19/git-usage/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hexo-use" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2017/07/19/hexo-use/">hexo使用方法</a>
-    </h1>
-  
-
-        
-        <a href="/blog/2017/07/19/hexo-use/" class="archive-article-date">
-  	<time datetime="2017-07-19T07:58:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="使用hexo部署Github-Pages"><a href="#使用hexo部署Github-Pages" class="headerlink" title="使用hexo部署Github Pages"></a>使用hexo部署Github Pages</h2><blockquote>
-<p><a href="https://gist.github.com/btfak/18938572f5df000ebe06fbd1872e4e39" target="_blank" rel="external">https://gist.github.com/btfak/18938572f5df000ebe06fbd1872e4e39</a></p>
-</blockquote>
-<ul>
-<li><a href="https://github.com/hexojs/hexo" target="_blank" rel="external">https://github.com/hexojs/hexo</a></li>
-<li><a href="https://hexo.io/docs/" target="_blank" rel="external">https://hexo.io/docs/</a></li>
-</ul>
-<h3 id="1-安装-Hexo"><a href="#1-安装-Hexo" class="headerlink" title="1. 安装 Hexo"></a>1. 安装 Hexo</h3><pre><code>npm install hexo-cli -g
-</code></pre><h3 id="2-建立你的GitHub-Pages项目"><a href="#2-建立你的GitHub-Pages项目" class="headerlink" title="2. 建立你的GitHub Pages项目"></a>2. 建立你的GitHub Pages项目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo init yourname.github.io </div><div class="line">cd yourname.github.io</div><div class="line">npm install</div></pre></td></tr></table></figure>
-<h3 id="3-本地测试你的页面"><a href="#3-本地测试你的页面" class="headerlink" title="3. 本地测试你的页面"></a>3. 本地测试你的页面</h3><pre><code>hexo server
-</code></pre>
-        
-          <a class="article-more-a" href="/blog/2017/07/19/hexo-use/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/blog/2017/07/19/hexo-use/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-first-post" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2017/07/19/first-post/">创建gh-pages项目</a>
-    </h1>
-  
-
-        
-        <a href="/blog/2017/07/19/first-post/" class="archive-article-date">
-  	<time datetime="2017-07-19T06:35:57.815Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><pre><code>mkdir 目录名
-</code></pre><p>对该目录进行git初始化。</p>
-<pre><code>cd 目录名
-git init
-</code></pre><p>创建一个没有父节点的分支gh-pages。</p>
-<pre><code>git checkout --orphan gh-pages
-</code></pre><h2 id="发布内容"><a href="#发布内容" class="headerlink" title="发布内容"></a>发布内容</h2><p>把所有内容加入本地git库。</p>
-<pre><code>git add .
-git commit -m &quot;first post&quot;
-</code></pre><p>前往github的网站，在网站上创建一个名为前面所建目录名的库。接着，再将本地内容推送到github上你刚创建的库。注意，下面命令中的username，要替换成你的username。</p>
-<pre><code>git remote add origin https://github.com/username/xxx.git
-git push origin gh-pages
-</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/blog/2017/07/19/first-post/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2017/07/19/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/blog/2017/07/19/hello-world/" class="archive-article-date">
-  	<time datetime="2017-07-19T06:19:04.538Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/blog/2017/07/19/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -676,8 +341,8 @@ git push origin gh-pages
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
