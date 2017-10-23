@@ -3,7 +3,7 @@ title: Javascript 学习日记一
 date: 2017-10-23 10:55:03
 tags: 技术
 ---
-# Javascript 学习日记
+# Javascript 学习日记一
 
 ## 鼠标无限移动 JS API Pointer Lock
 
@@ -59,6 +59,8 @@ if (eleImage) {
 
 效果见
 > <http://www.zhangxinxu.com/study/201709/js-pointer-lock-demo.html>
+
+<!--more-->
 
 ## Chrome opacity非1时border-radius圆角边框剪裁问题
 
