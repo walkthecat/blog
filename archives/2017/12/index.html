@@ -6,19 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://walkthecat.github.io/blog">
-  <title>Javascript 学习日记二 | WalkTheCat&#39;s note</title>
+  <title>Archives: 2017/12 | WalkTheCat&#39;s note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Javascript 学习日记二CSS3 linear-gradient线性渐变实现虚线等简单实用图形 http://www.zhangxinxu.com/wordpress/?p=6494  通过对linear-gradient和background-size（重要）的设置以达到各种效果，background-size可以约束在特定区域以达到效果 示例代码 加减号的实现 12345678.btn">
-<meta name="keywords" content="技术">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Javascript 学习日记二">
-<meta property="og:url" content="https://walkthecat.github.io/blog/2017/11/10/javascript-study-two/index.html">
+  <meta name="description" content="WalkTheCat&apos;s personal blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="WalkTheCat&#39;s note">
+<meta property="og:url" content="https://walkthecat.github.io/blog/archives/2017/12/index.html">
 <meta property="og:site_name" content="WalkTheCat&#39;s note">
-<meta property="og:description" content="Javascript 学习日记二CSS3 linear-gradient线性渐变实现虚线等简单实用图形 http://www.zhangxinxu.com/wordpress/?p=6494  通过对linear-gradient和background-size（重要）的设置以达到各种效果，background-size可以约束在特定区域以达到效果 示例代码 加减号的实现 12345678.btn">
-<meta property="og:updated_time" content="2017-11-10T03:00:30.410Z">
+<meta property="og:description" content="WalkTheCat&apos;s personal blog">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Javascript 学习日记二">
-<meta name="twitter:description" content="Javascript 学习日记二CSS3 linear-gradient线性渐变实现虚线等简单实用图形 http://www.zhangxinxu.com/wordpress/?p=6494  通过对linear-gradient和background-size（重要）的设置以达到各种效果，background-size可以约束在特定区域以达到效果 示例代码 加减号的实现 12345678.btn">
+<meta name="twitter:title" content="WalkTheCat&#39;s note">
+<meta name="twitter:description" content="WalkTheCat&apos;s personal blog">
   
     <link rel="alternative" href="/atom.xml" title="WalkTheCat&#39;s note" type="application/atom+xml">
   
@@ -160,57 +158,36 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-javascript-study-two" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      Javascript 学习日记二
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/blog/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/blog/2017/12/23/sql-pagination/" class="archive-article-date">
+  	<time datetime="2017-12-23T04:37:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-23</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/blog/2017/12/23/sql-pagination/">几种常见SQL分页方式</a>
     </h1>
   
 
-        
-        <a href="/blog/2017/11/10/javascript-study-two/" class="archive-article-date">
-  	<time datetime="2017-11-10T01:40:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Javascript-学习日记二"><a href="#Javascript-学习日记二" class="headerlink" title="Javascript 学习日记二"></a>Javascript 学习日记二</h1><h2 id="CSS3-linear-gradient线性渐变实现虚线等简单实用图形"><a href="#CSS3-linear-gradient线性渐变实现虚线等简单实用图形" class="headerlink" title="CSS3 linear-gradient线性渐变实现虚线等简单实用图形"></a>CSS3 linear-gradient线性渐变实现虚线等简单实用图形</h2><blockquote>
-<p><a href="http://www.zhangxinxu.com/wordpress/?p=6494" target="_blank" rel="external">http://www.zhangxinxu.com/wordpress/?p=6494</a></p>
-</blockquote>
-<p>通过对linear-gradient和background-size（重要）的设置以达到各种效果，background-size可以约束在特定区域以达到效果</p>
-<p>示例代码</p>
-<p>加减号的实现</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.btn-plus</span> &#123;</div><div class="line">    <span class="attribute">background-image</span>: <span class="built_in">linear-gradient</span>(to top, currentColor, currentColor), <span class="built_in">linear-gradient</span>(to top, currentColor, currentColor);</div><div class="line">    <span class="attribute">background-size</span>: <span class="number">10px</span> <span class="number">2px</span>, <span class="number">2px</span> <span class="number">10px</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.minus</span> &#123;</div><div class="line">    <span class="attribute">background-image</span>: <span class="built_in">linear-gradient</span>(to top, #666, #666);</div><div class="line">    <span class="attribute">background-size</span>: <span class="number">10px</span> <span class="number">2px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>dashed虚线的自定义</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.dashed</span> &#123;</div><div class="line">    <span class="attribute">height</span>: <span class="number">1px</span>;</div><div class="line">    <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to right, #000000, #000000 5px, transparent 5px, transparent);</div><div class="line">    <span class="attribute">background-size</span>: <span class="number">10px</span> <span class="number">100%</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>虚线三角</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.tri</span> &#123;</div><div class="line">    <span class="attribute">width</span>: <span class="number">6px</span>; <span class="attribute">height</span>: <span class="number">6px</span>;</div><div class="line">    <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to top, #ddd, #ddd) no-repeat, <span class="built_in">linear-gradient</span>(to right, #ddd, #ddd) no-repeat, <span class="built_in">linear-gradient</span>(135deg, #fff, #fff 6px, hsla(0,0%,100%,0) <span class="number">6px</span>) no-repeat;</div><div class="line">    <span class="attribute">background-size</span>: <span class="number">6px</span> <span class="number">1px</span>, <span class="number">1px</span> <span class="number">6px</span>, <span class="number">6px</span> <span class="number">6px</span>;</div><div class="line">    <span class="attribute">transform</span>: <span class="built_in">rotate</span>(-45deg);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>效果见</p>
-<blockquote>
-<p><a href="http://www.zhangxinxu.com/study/201710/css3-linear-gradient-dashed-generate.html" target="_blank" rel="external">http://www.zhangxinxu.com/study/201710/css3-linear-gradient-dashed-generate.html</a></p>
-</blockquote>
-<h2 id="3种纯CSS实现中间镂空的12色彩虹渐变圆环方法"><a href="#3种纯CSS实现中间镂空的12色彩虹渐变圆环方法" class="headerlink" title="3种纯CSS实现中间镂空的12色彩虹渐变圆环方法"></a>3种纯CSS实现中间镂空的12色彩虹渐变圆环方法</h2><blockquote>
-<p><a href="http://www.zhangxinxu.com/wordpress/?p=6516" target="_blank" rel="external">http://www.zhangxinxu.com/wordpress/?p=6516</a></p>
-</blockquote>
-<ul>
-<li>借助CSS3 conic-gradient锥形渐变实现12色渐变圆环</li>
-<li>借助CSS3 linear-gradient线性渐变近似实现12色渐变圆环</li>
-<li>借助CSS clip剪裁、transform旋转和模糊滤镜实现12色渐变圆环</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -222,113 +199,19 @@
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=https://walkthecat.github.io/blog/2017/11/10/javascript-study-two/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/blog/2017/12/23/sql-pagination/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          几种常见SQL分页方式
-        
-      </div>
-    </a>
   
   
-    <a href="/blog/2017/10/23/javascript-study-one/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Javascript 学习日记一</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
+    
 
 
           </div>
@@ -351,8 +234,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
