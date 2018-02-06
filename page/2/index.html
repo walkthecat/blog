@@ -6,19 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://walkthecat.github.io/blog">
-  <title>Javascript 学习日记三 | WalkTheCat&#39;s note</title>
+  <title>WalkTheCat&#39;s note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Javascript 学习日记三借助HTML5 details,summary无JS实现各种交互效果 http://www.zhangxinxu.com/wordpress/?p=7312  带slideUp/slideDown效果的多项折叠菜单 首先看下HTML，展开列表结构发生了变化，不是作为的子元素，而是作为其相邻兄弟元素存在，HTML示意： 1234567&amp;lt;details open&amp;">
-<meta name="keywords" content="技术">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Javascript 学习日记三">
-<meta property="og:url" content="https://walkthecat.github.io/blog/2018/01/22/javascript-study-three/index.html">
+  <meta name="description" content="WalkTheCat&apos;s personal blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="WalkTheCat&#39;s note">
+<meta property="og:url" content="https://walkthecat.github.io/blog/page/2/index.html">
 <meta property="og:site_name" content="WalkTheCat&#39;s note">
-<meta property="og:description" content="Javascript 学习日记三借助HTML5 details,summary无JS实现各种交互效果 http://www.zhangxinxu.com/wordpress/?p=7312  带slideUp/slideDown效果的多项折叠菜单 首先看下HTML，展开列表结构发生了变化，不是作为的子元素，而是作为其相邻兄弟元素存在，HTML示意： 1234567&amp;lt;details open&amp;">
-<meta property="og:updated_time" content="2018-01-22T01:50:06.306Z">
+<meta property="og:description" content="WalkTheCat&apos;s personal blog">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Javascript 学习日记三">
-<meta name="twitter:description" content="Javascript 学习日记三借助HTML5 details,summary无JS实现各种交互效果 http://www.zhangxinxu.com/wordpress/?p=7312  带slideUp/slideDown效果的多项折叠菜单 首先看下HTML，展开列表结构发生了变化，不是作为的子元素，而是作为其相邻兄弟元素存在，HTML示意： 1234567&amp;lt;details open&amp;">
+<meta name="twitter:title" content="WalkTheCat&#39;s note">
+<meta name="twitter:description" content="WalkTheCat&apos;s personal blog">
   
     <link rel="alternative" href="/atom.xml" title="WalkTheCat&#39;s note" type="application/atom+xml">
   
@@ -160,57 +158,37 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-javascript-study-three" class="article article-type-post " itemscope itemprop="blogPost">
+            
+  
+    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      Javascript 学习日记三
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2017/07/19/hello-world/">Hello World</a>
     </h1>
   
 
         
-        <a href="/blog/2018/01/22/javascript-study-three/" class="archive-article-date">
-  	<time datetime="2018-01-22T01:40:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-22</time>
+        <a href="/blog/2017/07/19/hello-world/" class="archive-article-date">
+  	<time datetime="2017-07-19T06:19:04.538Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-19</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Javascript-学习日记三"><a href="#Javascript-学习日记三" class="headerlink" title="Javascript 学习日记三"></a>Javascript 学习日记三</h1><h2 id="借助HTML5-details-summary无JS实现各种交互效果"><a href="#借助HTML5-details-summary无JS实现各种交互效果" class="headerlink" title="借助HTML5 details,summary无JS实现各种交互效果"></a>借助HTML5 details,summary无JS实现各种交互效果</h2><blockquote>
-<p><a href="http://www.zhangxinxu.com/wordpress/?p=7312" target="_blank" rel="external">http://www.zhangxinxu.com/wordpress/?p=7312</a></p>
-</blockquote>
-<p>带slideUp/slideDown效果的多项折叠菜单</p>
-<p>首先看下HTML，展开列表结构发生了变化，不是作为<details>的子元素，而是作为其相邻兄弟元素存在，HTML示意：</details></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">details</span> <span class="attr">open</span>&gt;</span><span class="tag">&lt;<span class="name">summary</span>&gt;</span>订单中心<span class="tag">&lt;/<span class="name">summary</span>&gt;</span><span class="tag">&lt;/<span class="name">details</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dl</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>&gt;</span>我的订单<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>&gt;</span>我的活动<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>&gt;</span>评价晒单<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>&gt;</span>购物助手<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dl</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>上面<dl>定义列表就是展开收起的内容，其作为兄弟元素和<details>元素平起平坐，于是，我们就可以利用点击<summary>元素<details>元素的open属性会变化的特性实现我们想要的动画效果，CSS如下：</details></summary></details></dl></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">details</span> + <span class="selector-tag">dl</span> &#123;</div><div class="line">    <span class="attribute">max-height</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">transition</span>: max-height .<span class="number">25s</span>;</div><div class="line">    <span class="attribute">overflow</span>: hidden;</div><div class="line">&#125;</div><div class="line"><span class="selector-attr">[open]</span> + <span class="selector-tag">dl</span> &#123;</div><div class="line">    <span class="attribute">max-height</span>: <span class="number">100px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>效果见</p>
-<blockquote>
-<p><a href="http://www.zhangxinxu.com/study/201801/html-details-summary-example-slideup-slidedown.html" target="_blank" rel="external">http://www.zhangxinxu.com/study/201801/html-details-summary-example-slideup-slidedown.html</a></p>
-</blockquote>
-<h2 id="CSS-focus-within伪类选择器及纯CSS下拉等应用举例"><a href="#CSS-focus-within伪类选择器及纯CSS下拉等应用举例" class="headerlink" title="CSS :focus-within伪类选择器及纯CSS下拉等应用举例"></a>CSS :focus-within伪类选择器及纯CSS下拉等应用举例</h2><blockquote>
-<p><a href="http://www.zhangxinxu.com/wordpress/?p=7327" target="_blank" rel="external">http://www.zhangxinxu.com/wordpress/?p=7327</a></p>
-</blockquote>
-<h3 id="表单输入勿扰模式"><a href="#表单输入勿扰模式" class="headerlink" title="表单输入勿扰模式"></a>表单输入勿扰模式</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">form</span> &#123;</div><div class="line">    <span class="attribute">outline</span>: <span class="number">2000px</span> solid <span class="built_in">hsla</span>(0,0%,100%,0);</div><div class="line">    <span class="attribute">transition</span>: outline .<span class="number">2s</span>;</div><div class="line">    <span class="attribute">position</span>: relative;</div><div class="line">    <span class="attribute">z-index</span>: <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-tag">form</span><span class="selector-pseudo">:focus-within</span> &#123;</div><div class="line">    <span class="attribute">outline</span>: <span class="number">2000px</span> solid <span class="built_in">hsla</span>(0,0%,100%,1);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>效果见</p>
-<blockquote>
-<p><a href="http://www.zhangxinxu.com/study/201801/focus-within-form-dnd-mode.html" target="_blank" rel="external">http://www.zhangxinxu.com/study/201801/focus-within-form-dnd-mode.html</a></p>
-</blockquote>
-<h3 id="带计数文本域的focus高亮"><a href="#带计数文本域的focus高亮" class="headerlink" title="带计数文本域的focus高亮"></a>带计数文本域的focus高亮</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.textarea-x</span><span class="selector-pseudo">:focus-within</span> &#123;</div><div class="line">    <span class="attribute">border-color</span>: <span class="number">#00a5e0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>效果见</p>
-<blockquote>
-<p><a href="http://www.zhangxinxu.com/study/201801/focus-within-textarea-highlight.html" target="_blank" rel="external">http://www.zhangxinxu.com/study/201801/focus-within-textarea-highlight.html</a></p>
-</blockquote>
-<h3 id="下拉菜单"><a href="#下拉菜单" class="headerlink" title="下拉菜单"></a>下拉菜单</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"details"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:"</span> <span class="attr">class</span>=<span class="string">"summary"</span>&gt;</span>我的消息<span class="tag">&lt;/<span class="name">a</span>&gt;</span> </div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:"</span>&gt;</span>我的回答<span class="tag">&lt;<span class="name">sup</span>&gt;</span>12<span class="tag">&lt;/<span class="name">sup</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:"</span>&gt;</span>我的私信<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:"</span>&gt;</span>未评价订单<span class="tag">&lt;<span class="name">sup</span>&gt;</span>2<span class="tag">&lt;/<span class="name">sup</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:"</span>&gt;</span>我的关注<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.box</span> &#123;</div><div class="line">    <span class="attribute">display</span>: none;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.details</span><span class="selector-pseudo">:focus-within</span> <span class="selector-class">.summary</span> &#123;</div><div class="line">    <span class="attribute">background-color</span>: <span class="number">#fff</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.details</span><span class="selector-pseudo">:focus-within</span> <span class="selector-class">.box</span> &#123;</div><div class="line">    <span class="attribute">display</span>: block;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>效果见</p>
-<blockquote>
-<p><a href="http://www.zhangxinxu.com/study/201801/focus-within-pure-css-droplist.html" target="_blank" rel="external">http://www.zhangxinxu.com/study/201801/focus-within-pure-css-droplist.html</a></p>
-</blockquote>
+        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 
       
 
@@ -219,98 +197,19 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
 
       
-
+        <p class="article-more-link">
+          <a class="article-more-a" href="/blog/2017/07/19/hello-world/">展开全文 >></a>
+        </p>
       
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
-        </div>
-      </div>
-    </span>
-  </div>
-</div>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=https://walkthecat.github.io/blog/2018/01/22/javascript-study-three/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/blog/2018/02/06/javascript-study-four/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Javascript 学习日记四
-        
-      </div>
-    </a>
-  
-  
-    <a href="/blog/2017/12/23/sql-pagination/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">几种常见SQL分页方式</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -330,12 +229,12 @@
 
 
 
-  
-  
-  
 
   
-
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/blog/">&laquo; Prev</a><a class="page-number" href="/blog/">1</a><span class="page-number current">2</span>
+    </nav>
   
 
 
@@ -358,8 +257,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: false,
-		isPost: true,
+		isHome: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
