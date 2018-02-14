@@ -187,6 +187,32 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">订单提交中<span class="tag">&lt;<span class="name">dot</span>&gt;</span>...<span class="tag">&lt;/<span class="name">dot</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>命令行中常见的loading动画实现只要content设置为下面这个值</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.loading</span><span class="selector-pseudo">::after</span> &#123;</div><div class="line">  <span class="attribute">display</span>: inline-table;</div><div class="line">  <span class="attribute">content</span>: <span class="string">"/\A–\A\\\A|"</span>;</div><div class="line">  <span class="attribute">white-space</span>: pre;</div><div class="line">  <span class="attribute">animation</span>: spin4 <span class="number">2s</span> <span class="built_in">steps</span>(4) infinite;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="crossOrigin属性解决canvas图片getImageData跨域"><a href="#crossOrigin属性解决canvas图片getImageData跨域" class="headerlink" title="crossOrigin属性解决canvas图片getImageData跨域"></a>crossOrigin属性解决canvas图片getImageData跨域</h2><blockquote>
+<p><a href="http://www.zhangxinxu.com/wordpress/?p=7378" target="_blank" rel="external">http://www.zhangxinxu.com/wordpress/?p=7378</a></p>
+</blockquote>
+<p>在HTML5中，有些元素提供了支持CORS(Cross-Origin Resource Sharing)（跨域资源共享）的属性，这些元素包括\<img\>，\<video\>，\<script\>等，而提供的属性名就是crossOrigin属性。</script\></video\></img\></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> canvas = <span class="built_in">document</span>.createElement(<span class="string">'canvas'</span>);</div><div class="line"><span class="keyword">var</span> context = canvas.getContext(<span class="string">'2d'</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> img = <span class="keyword">new</span> Image();</div><div class="line">img.crossOrigin = <span class="string">''</span>;</div><div class="line">img.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    context.drawImage(<span class="keyword">this</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    context.getImageData(<span class="number">0</span>, <span class="number">0</span>, <span class="keyword">this</span>.width, <span class="keyword">this</span>.height);</div><div class="line">&#125;;</div><div class="line">img.src = <span class="string">'https://avatars3.githubusercontent.com/u/496048?s=120&amp;v=4'</span>;<span class="string">';</span></div></pre></td></tr></table></figure>
+<p>关键处为img.crossOrigin = ‘’</p>
+<p>crossOrigin可以有下面两个值</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">关键字</th>
+<th style="text-align:left">释义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">anonymous</td>
+<td style="text-align:left">元素的跨域资源请求不需要凭证标志设置。</td>
+</tr>
+<tr>
+<td style="text-align:left">use-credentials</td>
+<td style="text-align:left">元素的跨域资源请求需要凭证标志设置，意味着该请求需要提供凭证。</td>
+</tr>
+</tbody>
+</table>
+
       
 
       
