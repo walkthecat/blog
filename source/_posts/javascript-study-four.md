@@ -43,3 +43,31 @@ dot::before {
   animation: spin4 2s steps(4) infinite;
 }
 ```
+
+## crossOrigin属性解决canvas图片getImageData跨域
+
+> <http://www.zhangxinxu.com/wordpress/?p=7378>
+
+在HTML5中，有些元素提供了支持CORS(Cross-Origin Resource Sharing)（跨域资源共享）的属性，这些元素包括\<img\>，\<video\>，\<script\>等，而提供的属性名就是crossOrigin属性。
+
+```javascript
+var canvas = document.createElement('canvas');
+var context = canvas.getContext('2d');
+
+var img = new Image();
+img.crossOrigin = '';
+img.onload = function () {
+    context.drawImage(this, 0, 0);
+    context.getImageData(0, 0, this.width, this.height);
+};
+img.src = 'https://avatars3.githubusercontent.com/u/496048?s=120&v=4';';
+```
+
+关键处为img.crossOrigin = ''
+
+crossOrigin可以有下面两个值
+
+|关键字|释义|
+|:---|:---|
+|anonymous|元素的跨域资源请求不需要凭证标志设置。|
+|use-credentials|元素的跨域资源请求需要凭证标志设置，意味着该请求需要提供凭证。|
